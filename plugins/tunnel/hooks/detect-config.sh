@@ -20,6 +20,14 @@ if [ "$has_config" -eq 0 ] && [ "${active:-0}" -eq 0 ]; then
   exit 0
 fi
 
+if ! command -v tunnel >/dev/null 2>&1; then
+  cat <<EOF
+tunnel state present on this machine but the \`tunnel\` binary is not on PATH.
+Install it with: /tunnel:install   (uses brokit if available, else upstream install.sh)
+EOF
+  exit 0
+fi
+
 note=""
 if [ "$has_config" -eq 1 ]; then
   server="$(grep -E '^server_url:' "$config" 2>/dev/null | head -1 | sed 's/^server_url:[[:space:]]*//')"

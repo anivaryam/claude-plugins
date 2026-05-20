@@ -49,9 +49,24 @@ If `/plugin install proc-compose` returns `Plugin "proc-compose" not found in an
 - **SessionStart hook** — detects config files (`proc-compose.yml`, `.merge-port.yaml`, `~/.tunnel/config.yml`, `*.vault`) in the cwd and surfaces a brief context note.
 - **Subagent** — `proc-compose-doctor`, `merge-port-doctor`, `tunnel-doctor`, `env-vault-doctor`. Invoke for diagnosis when something is wrong.
 
-## Binaries are not bundled
+## Installing the binaries
 
-Plugins describe the tools and wrap the CLI — they do **not** install the binaries themselves. Install the actual binaries via [`brokit`](https://github.com/anivaryam/brokit) (recommended) or the individual install paths in each tool's README:
+Plugins ship the skill, commands, hook, and subagent — not the binaries themselves. Each plugin exposes an `/install` slash command that fetches the latest release:
+
+```
+/proc-compose:install
+/merge-port:install
+/tunnel:install
+/env-vault:install
+```
+
+Resolution order inside each `install`:
+1. `brokit install <tool>` if [brokit](https://github.com/anivaryam/brokit) is on PATH (recommended — one command for install, update, uninstall across the whole tool family).
+2. Upstream `install.sh` from the tool's repo (verifies sha256 where applicable, drops the binary into `~/.local/bin`). `env-vault` additionally tries `npm install -g env-vault` before falling back to a platform-matched release tarball.
+
+The SessionStart hook in each plugin also detects relevant config files (e.g. `proc-compose.yml`) and nudges you to run the install command when the binary is missing.
+
+To install everything in one go at the shell level:
 
 ```sh
 brokit install proc-compose merge-port tunnel env-vault

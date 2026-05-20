@@ -18,7 +18,17 @@ while [ "$dir" != "/" ]; do
   dir="$(dirname "$dir")"
 done
 
-[ -z "$config" ] && exit 0
+if [ -z "$config" ]; then
+  exit 0
+fi
+
+if ! command -v proc-compose >/dev/null 2>&1; then
+  cat <<EOF
+proc-compose config detected at $config but the \`proc-compose\` binary is not on PATH.
+Install it with: /proc-compose:install   (uses brokit if available, else upstream install.sh)
+EOF
+  exit 0
+fi
 
 # Stable, deterministic process list — same logic as `proc-compose list` but
 # without requiring the binary on PATH (the model may want to suggest install).

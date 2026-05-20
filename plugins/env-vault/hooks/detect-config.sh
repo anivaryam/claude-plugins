@@ -10,6 +10,14 @@ dir="$(pwd)"
 vaults="$(ls "$dir"/*.vault 2>/dev/null | head -3)"
 [ -z "$vaults" ] && exit 0
 
+if ! command -v env-vault >/dev/null 2>&1; then
+  cat <<EOF
+*.vault file(s) detected in $dir but the \`env-vault\` binary is not on PATH.
+Install it with: /env-vault:install   (uses brokit, npm, or release tarball)
+EOF
+  exit 0
+fi
+
 # Count keys without prompting for password — uses `env-vault keys` if available,
 # but only if a non-interactive password source exists (env var). Otherwise just
 # list the vault paths.

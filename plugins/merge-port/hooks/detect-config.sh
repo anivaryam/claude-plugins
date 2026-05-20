@@ -16,7 +16,17 @@ while [ "$dir" != "/" ]; do
   dir="$(dirname "$dir")"
 done
 
-[ -z "$config" ] && exit 0
+if [ -z "$config" ]; then
+  exit 0
+fi
+
+if ! command -v merge-port >/dev/null 2>&1; then
+  cat <<EOF
+merge-port config detected at $config but the \`merge-port\` binary is not on PATH.
+Install it with: /merge-port:install   (uses brokit if available, else upstream install.sh)
+EOF
+  exit 0
+fi
 
 cat <<EOF
 merge-port config detected: $config
