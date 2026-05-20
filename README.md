@@ -15,17 +15,32 @@ Each plugin is independent — install only the ones you need.
 
 ## Install
 
-```sh
-# In Claude Code
+Two steps. The marketplace must be added before any plugin can be installed.
+
+**Step 1 — add the marketplace:**
+
+```
 /plugin marketplace add anivaryam/claude-plugins
-/plugin install proc-compose          # or merge-port / tunnel / env-vault
 ```
 
-Install all four:
+**Step 2 — install one or more plugins:**
 
-```sh
-/plugin install proc-compose merge-port tunnel env-vault
 ```
+/plugin install proc-compose@claude-plugins
+/plugin install merge-port@claude-plugins
+/plugin install tunnel@claude-plugins
+/plugin install env-vault@claude-plugins
+```
+
+The `@claude-plugins` suffix names the marketplace. Skip it only if you're sure no other marketplace exposes a plugin with the same name.
+
+Verify the marketplace was added:
+
+```
+/plugin marketplace list
+```
+
+If `/plugin install proc-compose` returns `Plugin "proc-compose" not found in any marketplace`, you skipped step 1.
 
 ## What each plugin gives you
 

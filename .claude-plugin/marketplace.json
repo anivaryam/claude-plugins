@@ -1,6 +1,6 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "anivaryam-tools",
+  "name": "claude-plugins",
   "description": "Claude Code plugins for the anivaryam tool family: proc-compose, merge-port, tunnel, env-vault. Each plugin bundles a skill (usage knowledge), slash commands (CLI wrappers), a SessionStart hook (config detection), and a diagnostic subagent.",
   "owner": {
     "name": "anivaryam",
