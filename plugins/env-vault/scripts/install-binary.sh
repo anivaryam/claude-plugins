@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Install or update the env-vault binary.
-# Strategy: prefer brokit. Otherwise prefer npm (cross-platform), then fall
-# back to fetching the platform-matched release tarball directly.
+# Strategy: prefer brokit (cross-tool installer), fall back to the upstream
+# install.sh which fetches the platform-matched release tarball.
 
 set -euo pipefail
 
@@ -13,44 +13,17 @@ if command -v brokit >/dev/null 2>&1; then
   exec brokit install "$TOOL"
 fi
 
-if command -v npm >/dev/null 2>&1; then
-  echo "→ brokit not found. Installing $TOOL globally via npm..."
-  exec npm install -g env-vault
-fi
-
 cat <<MSG
-→ Neither brokit nor npm found on PATH. Falling back to release tarball.
+→ brokit not found on PATH. Falling back to upstream install.sh.
   Recommended path is brokit — handles install, update, and uninstall for
   the entire anivaryam tool family. See: https://github.com/anivaryam/brokit
+
+→ Fetching install.sh from $REPO@main...
+  (Drops the binary into /usr/local/bin by default. Override with
+  INSTALL_DIR=~/.local/bin before re-running if /usr/local/bin needs sudo.)
 MSG
 
-uname_s="$(uname -s | tr '[:upper:]' '[:lower:]')"
-uname_m="$(uname -m)"
-case "$uname_m" in
-  x86_64|amd64) arch="amd64" ;;
-  aarch64|arm64) arch="arm64" ;;
-  *) echo "✗ Unsupported architecture: $uname_m"; exit 1 ;;
-esac
-case "$uname_s" in
-  linux|darwin) os="$uname_s" ;;
-  *) echo "✗ Unsupported OS: $uname_s. Use brokit or download from https://github.com/$REPO/releases manually."; exit 1 ;;
-esac
+INSTALL_URL="https://raw.githubusercontent.com/${REPO}/main/install.sh"
+curl -fsSL "$INSTALL_URL" | sh
 
-URL="https://github.com/${REPO}/releases/latest/download/${TOOL}_${os}_${arch}.tar.gz"
-DEST="${HOME}/.local/bin"
-mkdir -p "$DEST"
-
-echo "→ Downloading $URL..."
-TMP="$(mktemp -d)"
-trap 'rm -rf "$TMP"' EXIT
-curl -fsSL "$URL" -o "$TMP/${TOOL}.tar.gz"
-tar -xzf "$TMP/${TOOL}.tar.gz" -C "$TMP"
-mv "$TMP/${TOOL}" "$DEST/${TOOL}"
-chmod +x "$DEST/${TOOL}"
-
-echo "→ Installed to $DEST/${TOOL}"
-case ":$PATH:" in
-  *":$DEST:"*) ;;
-  *) echo "⚠ $DEST is not on PATH. Add to ~/.bashrc:  export PATH=\"$DEST:\$PATH\"" ;;
-esac
-echo "→ Verify with: $TOOL --help"
+echo "→ Done. Verify with: $TOOL --help"
