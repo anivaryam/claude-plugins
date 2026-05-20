@@ -1,4 +1,4 @@
-# claude-plugins
+# anivaryam-plugins
 
 Claude Code plugins for the [anivaryam](https://github.com/anivaryam) tool family. One marketplace, four plugins — each bundling a skill, slash commands, a SessionStart hook, and a diagnostic subagent.
 
@@ -20,19 +20,19 @@ Two steps. The marketplace must be added before any plugin can be installed.
 **Step 1 — add the marketplace:**
 
 ```
-/plugin marketplace add anivaryam/claude-plugins
+/plugin marketplace add anivaryam/anivaryam-plugins
 ```
 
 **Step 2 — install one or more plugins:**
 
 ```
-/plugin install proc-compose@claude-plugins
-/plugin install merge-port@claude-plugins
-/plugin install tunnel@claude-plugins
-/plugin install env-vault@claude-plugins
+/plugin install proc-compose@anivaryam-plugins
+/plugin install merge-port@anivaryam-plugins
+/plugin install tunnel@anivaryam-plugins
+/plugin install env-vault@anivaryam-plugins
 ```
 
-The `@claude-plugins` suffix names the marketplace. Skip it only if you're sure no other marketplace exposes a plugin with the same name.
+The `@anivaryam-plugins` suffix names the marketplace. Skip it only if you're sure no other marketplace exposes a plugin with the same name.
 
 Verify the marketplace was added:
 
@@ -75,7 +75,7 @@ brokit install proc-compose merge-port tunnel env-vault
 ## Layout
 
 ```
-claude-plugins/
+anivaryam-plugins/
 ├── .claude-plugin/marketplace.json
 └── plugins/
     ├── proc-compose/
