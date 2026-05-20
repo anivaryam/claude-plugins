@@ -1,0 +1,24 @@
+{
+  "name": "merge-port",
+  "description": "Local reverse proxy that merges client and server onto one port. Path-prefix routing or explicit route mode, WebSocket passthrough.",
+  "version": "1.0.0",
+  "author": {
+    "name": "anivaryam",
+    "url": "https://github.com/anivaryam"
+  },
+  "homepage": "https://github.com/anivaryam/merge-port",
+  "license": "MIT",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/detect-config.sh\"",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  }
+}

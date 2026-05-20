@@ -1,0 +1,24 @@
+{
+  "name": "tunnel",
+  "description": "Self-hosted ngrok alternative. Expose local servers through a relay you control. HTTP/TCP/UDP, named tunnels, daemon mode.",
+  "version": "1.0.0",
+  "author": {
+    "name": "anivaryam",
+    "url": "https://github.com/anivaryam"
+  },
+  "homepage": "https://github.com/anivaryam/tunnel",
+  "license": "MIT",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/detect-config.sh\"",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,89 @@
+# claude-plugins
+
+Claude Code plugins for the [anivaryam](https://github.com/anivaryam) tool family. One marketplace, four plugins — each bundling a skill, slash commands, a SessionStart hook, and a diagnostic subagent.
+
+## Plugins
+
+| Plugin | What it covers | Upstream |
+|--------|---------------|----------|
+| **proc-compose** | Local process orchestrator. Dev stacks, microservices, container entrypoints. | [proc-compose](https://github.com/anivaryam/proc-compose) |
+| **merge-port** | Local reverse proxy. Frontend + backend on one port. | [merge-port](https://github.com/anivaryam/merge-port) |
+| **tunnel** | Self-hosted ngrok alternative. HTTP/TCP/UDP, named tunnels, daemon mode. | [tunnel](https://github.com/anivaryam/tunnel) |
+| **env-vault** | Encrypted `.env` files (AEAD + Argon2id). | [env-vault](https://github.com/anivaryam/env-vault) |
+
+Each plugin is independent — install only the ones you need.
+
+## Install
+
+```sh
+# In Claude Code
+/plugin marketplace add anivaryam/claude-plugins
+/plugin install proc-compose          # or merge-port / tunnel / env-vault
+```
+
+Install all four:
+
+```sh
+/plugin install proc-compose merge-port tunnel env-vault
+```
+
+## What each plugin gives you
+
+- **Skill** — usage knowledge loaded into context when the tool is relevant. Covers config, lifecycle, gotchas, verification.
+- **Slash commands** — `/proc-compose:up`, `/merge-port:up`, `/tunnel:http`, `/env-vault:seal`, etc. Pre-flight checks before running the underlying CLI.
+- **SessionStart hook** — detects config files (`proc-compose.yml`, `.merge-port.yaml`, `~/.tunnel/config.yml`, `*.vault`) in the cwd and surfaces a brief context note.
+- **Subagent** — `proc-compose-doctor`, `merge-port-doctor`, `tunnel-doctor`, `env-vault-doctor`. Invoke for diagnosis when something is wrong.
+
+## Binaries are not bundled
+
+Plugins describe the tools and wrap the CLI — they do **not** install the binaries themselves. Install the actual binaries via [`brokit`](https://github.com/anivaryam/brokit) (recommended) or the individual install paths in each tool's README:
+
+```sh
+brokit install proc-compose merge-port tunnel env-vault
+```
+
+## Layout
+
+```
+claude-plugins/
+├── .claude-plugin/marketplace.json
+└── plugins/
+    ├── proc-compose/
+    │   ├── .claude-plugin/plugin.json
+    │   ├── skills/proc-compose/SKILL.md
+    │   ├── commands/{up,bootstrap,status,doctor}.md
+    │   ├── hooks/detect-config.sh
+    │   └── agents/proc-compose-doctor.md
+    ├── merge-port/
+    │   ├── .claude-plugin/plugin.json
+    │   ├── skills/merge-port/SKILL.md
+    │   ├── commands/{up,discover,validate}.md
+    │   ├── hooks/detect-config.sh
+    │   └── agents/merge-port-doctor.md
+    ├── tunnel/
+    │   ├── .claude-plugin/plugin.json
+    │   ├── skills/tunnel/SKILL.md
+    │   ├── commands/{http,doctor,list}.md
+    │   ├── hooks/detect-config.sh
+    │   └── agents/tunnel-doctor.md
+    └── env-vault/
+        ├── .claude-plugin/plugin.json
+        ├── skills/env-vault/SKILL.md
+        ├── commands/{seal,open,diff}.md
+        ├── hooks/detect-config.sh
+        └── agents/env-vault-doctor.md
+```
+
+## Contributing
+
+Per-plugin changes only:
+- **Skill behaviour** — edit `plugins/<name>/skills/<name>/SKILL.md`.
+- **Slash commands** — edit/add `plugins/<name>/commands/*.md`.
+- **Hooks** — edit `plugins/<name>/hooks/*.sh` and the manifest at `plugins/<name>/.claude-plugin/plugin.json`.
+- **Subagents** — edit `plugins/<name>/agents/*.md`.
+
+Skill style: drop articles, fragments OK in headings, but full sentences in the body so non-native readers can pick it up cold. Code blocks unchanged. The plugins are independent — don't cross-reference internal state.
+
+## License
+
+MIT.

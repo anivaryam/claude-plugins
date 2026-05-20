@@ -1,0 +1,39 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "anivaryam-tools",
+  "description": "Claude Code plugins for the anivaryam tool family: proc-compose, merge-port, tunnel, env-vault. Each plugin bundles a skill (usage knowledge), slash commands (CLI wrappers), a SessionStart hook (config detection), and a diagnostic subagent.",
+  "owner": {
+    "name": "anivaryam",
+    "url": "https://github.com/anivaryam"
+  },
+  "plugins": [
+    {
+      "name": "proc-compose",
+      "description": "Local process orchestrator. One YAML, one lifecycle, one log stream. Frontend+backend dev stacks, microservices, container entrypoints.",
+      "source": "./plugins/proc-compose",
+      "category": "devtools",
+      "tags": ["process-manager", "dev-server", "orchestration", "yaml"]
+    },
+    {
+      "name": "merge-port",
+      "description": "Local reverse proxy. Merge client and server onto one port. Path-prefix or route mode, WebSocket passthrough.",
+      "source": "./plugins/merge-port",
+      "category": "devtools",
+      "tags": ["proxy", "reverse-proxy", "dev-server"]
+    },
+    {
+      "name": "tunnel",
+      "description": "Self-hosted ngrok alternative. Expose localhost through a relay you control. HTTP/TCP/UDP, named tunnels, daemon mode.",
+      "source": "./plugins/tunnel",
+      "category": "devtools",
+      "tags": ["tunnel", "ngrok", "expose", "public-url"]
+    },
+    {
+      "name": "env-vault",
+      "description": "Encrypted .env file manager. Seal secrets into committable vault files (AEAD + Argon2id).",
+      "source": "./plugins/env-vault",
+      "category": "security",
+      "tags": ["secrets", "env", "encryption"]
+    }
+  ]
+}

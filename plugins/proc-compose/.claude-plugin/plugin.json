@@ -1,0 +1,24 @@
+{
+  "name": "proc-compose",
+  "description": "Local process orchestrator for dev stacks and single-container deployments. One YAML, one lifecycle, one log stream.",
+  "version": "1.0.0",
+  "author": {
+    "name": "anivaryam",
+    "url": "https://github.com/anivaryam"
+  },
+  "homepage": "https://github.com/anivaryam/proc-compose",
+  "license": "MIT",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/detect-config.sh\"",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  }
+}
